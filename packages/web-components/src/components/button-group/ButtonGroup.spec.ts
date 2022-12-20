@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, cleanup, waitFor } from "@testing-library/svelte";
+import { afterEach, it, describe, expect, vi } from "vitest";
 import GoAButtonGroup from "./ButtonGroup.svelte";
 
 afterEach(cleanup);
@@ -11,7 +12,7 @@ describe("GoA ButtonGroup", () => {
       const buttonGroup = baseElement.container.querySelector("goa-button-group");
 
       waitFor(() => {
-        expect(buttonGroup).toHaveAttribute("type", "warning");
+        expect(buttonGroup.getAttribute("type")).toBe("warning");
       });
     });
   });
@@ -21,12 +22,12 @@ describe("GoA ButtonGroup", () => {
     const buttonGroup = baseElement.container.querySelector("goa-button-group");
 
     waitFor(() => {
-      expect(buttonGroup).toHaveAttribute("alignment", "start");
+      expect(buttonGroup.getAttribute("alignment")).toBe("start");
     });
   });
 
   it(`should not render ButtonGroup with invalid alignment`, async () => {
-    const mock = jest.spyOn(console, "error").mockImplementation();
+    const mock = vi.spyOn(console, "error")
     render(GoAButtonGroup, { alignment: "staart" });
     await waitFor(() => {
       expect(console.error["mock"].calls.length).toBeGreaterThan(0);
@@ -35,7 +36,7 @@ describe("GoA ButtonGroup", () => {
   });
 
   it(`should not render ButtonGroup with invalid gap`, async () => {
-    const mock = jest.spyOn(console, "error").mockImplementation();
+    const mock = vi.spyOn(console, "error")
     render(GoAButtonGroup, { alignment: "start", gap: "relaaexd" });
     await waitFor(() => {
       expect(console.error["mock"].calls.length).toBeGreaterThan(0);
@@ -55,10 +56,10 @@ describe("GoA ButtonGroup", () => {
       const buttongroup = await baseElement.findByTestId("buttongroup-test");
 
       expect(buttongroup).toBeTruthy();
-      expect(buttongroup).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(buttongroup).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(buttongroup).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(buttongroup).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(buttongroup.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(buttongroup.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(buttongroup.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(buttongroup.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)");
     });
   });
 });

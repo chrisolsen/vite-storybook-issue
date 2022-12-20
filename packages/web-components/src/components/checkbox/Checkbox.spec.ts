@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render, fireEvent } from '@testing-library/svelte';
+import { expect, describe, it, vi } from 'vitest';
 import GoACheckbox from './Checkbox.svelte'
 
 const testid = "checkbox-test";
@@ -33,7 +33,7 @@ describe('GoACheckbox Component', () => {
     it("allows for setting of the text", async () => {
       const el = await createElement({ text: "foobar" });
       const div = await el.findByTestId('text');
-      expect(div).toHaveTextContent("foobar");
+      expect(div.innerHTML).toContain("foobar");
     });
 
     it("can be checked", async () => {
@@ -67,7 +67,7 @@ describe('GoACheckbox Component', () => {
     it("handles change event that results in checked state with value initialized", async () => {
       const el = await createElement({ value: 'foobar' });
       const checkbox = el.container.querySelector("input");
-      const change = jest.fn();
+      const change = vi.fn();
 
       checkbox.addEventListener('_change', (event: CustomEvent) => {
         expect(event.detail.name).toBe('checkbox-test-name');
@@ -83,7 +83,7 @@ describe('GoACheckbox Component', () => {
     it("handles change event that results in checked state with value not initialized", async () => {
       const el = await createElement({});
       const checkbox = el.container.querySelector("input");
-      const change = jest.fn();
+      const change = vi.fn();
 
       checkbox.addEventListener('_change', (event: CustomEvent) => {
         expect(event.detail.name).toBe('checkbox-test-name');
@@ -99,7 +99,7 @@ describe('GoACheckbox Component', () => {
     it("handles change event that results in unchecked state", async () => {
       const el = await createElement({checked:true, value: "foo"});
       const checkbox = el.container.querySelector("input");
-      const change = jest.fn();
+      const change = vi.fn();
 
       checkbox.addEventListener('_change', (event: CustomEvent) => {
         expect(event.detail.name).toBe('checkbox-test-name');
@@ -126,10 +126,10 @@ describe('GoACheckbox Component', () => {
       const checkbox = await baseElement.findByTestId("checkbox-test");
 
       expect(checkbox).toBeTruthy();
-      expect(checkbox).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(checkbox).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(checkbox).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(checkbox).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(checkbox.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(checkbox.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(checkbox.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(checkbox.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)");
     });
   });
 });

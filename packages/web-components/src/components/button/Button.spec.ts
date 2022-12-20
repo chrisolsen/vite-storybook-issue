@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, fireEvent, waitFor } from '@testing-library/svelte';
+import { expect, it, describe, vi, SpyInstance, beforeEach, afterEach } from 'vitest';
 import GoAButton from './Button.svelte'
 
 describe('GoAButtonComponent', () => {
@@ -13,7 +14,7 @@ describe('GoAButtonComponent', () => {
 
   describe("events", () => {
     it('should handle the click event', async () => {
-      const onClick = jest.fn();
+      const onClick = vi.fn();
       const results = render(GoAButton, { testid: 'button-test' });
       const button = await results.findByTestId('button-test');
 
@@ -37,7 +38,7 @@ describe('GoAButtonComponent', () => {
     });
 
     it("should not allow for invalid size", async () => {
-      const mock = jest.spyOn(console, "error").mockImplementation();
+      const mock = vi.spyOn(console, "error")
       render(GoAButton, { size: "huuuuuuge" });
       await waitFor(() => {
         expect(console.error["mock"].calls.length).toBeGreaterThan(0);
@@ -71,14 +72,8 @@ describe('GoAButtonComponent', () => {
   });
 
   describe("Invalid attrs", () => {
-    let consoleMock: jest.SpyInstance;
-    beforeEach(() => {
-      consoleMock = jest.spyOn(console, "error").mockImplementation();
-      expect(console.error["mock"].calls.length).toBe(0);
-    })
-    afterEach(() => consoleMock.mockRestore())
-
     it("invalid type", async () => {
+      vi.spyOn(console, "error")
       render(GoAButton, { type: "foobar" });
       await waitFor(() => {
         expect(console.error["mock"].calls.length).toBeGreaterThan(0);
@@ -86,12 +81,14 @@ describe('GoAButtonComponent', () => {
     });
 
     it("invalid size", async () => {
+      vi.spyOn(console, "error")
       render(GoAButton, { size: "verybig" });
       await waitFor(() => {
         expect(console.error["mock"].calls.length).toBeGreaterThan(0);
       })
     });
     it("invalid variant", async () => {
+      vi.spyOn(console, "error")
       render(GoAButton, { variant: "sweet" });
       await waitFor(() => {
         expect(console.error["mock"].calls.length).toBeGreaterThan(0);
@@ -111,10 +108,10 @@ describe('GoAButtonComponent', () => {
       const button = await baseElement.findByTestId("button-test");
 
       expect(button).toBeTruthy();
-      expect(button).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(button).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(button).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(button).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(button.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(button.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(button.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(button.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)");
     });
   });
 });

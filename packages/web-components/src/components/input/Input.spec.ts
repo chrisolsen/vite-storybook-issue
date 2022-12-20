@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render, fireEvent, waitFor, cleanup } from '@testing-library/svelte';
+import { afterEach, it, describe, expect, vi } from 'vitest';
 import GoAInput from './Input.svelte'
 
 afterEach(cleanup);
@@ -99,7 +99,7 @@ describe('GoAInput Component', () => {
     const el = render(GoAInput, { testid: "input-test", trailingicon: "finger-print", handletrailingiconclick: "true" });
     const icon = await el.findByTestId('trailing-icon-button');
 
-    const click = jest.fn();
+    const click = vi.fn();
     icon.addEventListener("_trailingIconClick", click);
     await fireEvent.click(icon);
     expect(click).toBeCalled();
@@ -109,14 +109,14 @@ describe('GoAInput Component', () => {
     const el = render(GoAInput, { testid: "input-test", focused: "true" });
     const input = el.container.querySelector('input');
     await waitFor(() => {
-      expect(input).toHaveFocus();
+      expect(document.activeElement).toBe(input);
     })
   });
 
   it("handles keyup event", async () => {
     const { findByTestId } = render(GoAInput, { name: 'test-name', testid: "input-test" });
     const input = await findByTestId('input-test');
-    const change = jest.fn();
+    const change = vi.fn();
 
     input.addEventListener('_change', (e: CustomEvent) => {
       expect(e.detail.name).toBe("test-name");
@@ -133,7 +133,7 @@ describe('GoAInput Component', () => {
   it("handles the change event", async () => {
     const { findByTestId } = render(GoAInput, { name: 'test-name', testid: "input-test", type: "date" });
     const input = await findByTestId('input-test');
-    const change = jest.fn();
+    const change = vi.fn();
 
     input.addEventListener('_change', () => {
       change();
@@ -145,7 +145,7 @@ describe('GoAInput Component', () => {
 
   it("handles trailing icon click", async () => {
     const { findByTestId } = render(GoAInput, { testid: "input-test", handletrailingiconclick: "true", trailingicon: "finger-print" });
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const iconButton = await findByTestId('trailing-icon-button');
 
     iconButton.addEventListener('_trailingIconClick', onClick)
@@ -159,18 +159,18 @@ describe('GoAInput Component', () => {
       const el = render(GoAInput);
       const root = el.container.querySelector('input');
       expect(root).toBeTruthy();
-      expect(root).not.toHaveAttribute("min")
-      expect(root).not.toHaveAttribute("max")
-      expect(root).not.toHaveAttribute("step")
+      expect(root.getAttribute("min")).toBeFalsy()
+      expect(root.getAttribute("max")).toBeFalsy()
+      expect(root.getAttribute("step")).toBeFalsy()
     });
 
     it("allows for a numeric props", async () => {
       const el = render(GoAInput, { type: "number", min: "0", max: "10", step: 2 });
       const root = el.container.querySelector('input');
       expect(root).toBeTruthy();
-      expect(root).toHaveAttribute("min", "0")
-      expect(root).toHaveAttribute("max", "10")
-      expect(root).toHaveAttribute("step", "2")
+      expect(root.getAttribute("min")).toBe("0")
+      expect(root.getAttribute("max")).toBe("10")
+      expect(root.getAttribute("step")).toBe("2")
     });
   })
 
@@ -179,9 +179,9 @@ describe('GoAInput Component', () => {
       const el = render(GoAInput, { type: "date" });
       const input = el.container.querySelector('input');
       expect(input).toBeTruthy();
-      expect(input).not.toHaveAttribute("min")
-      expect(input).not.toHaveAttribute("max")
-      expect(input).not.toHaveAttribute("step")
+      expect(input.getAttribute("min")).toBeFalsy()
+      expect(input.getAttribute("max")).toBeFalsy()
+      expect(input.getAttribute("step")).toBeFalsy()
     });
   })
 
@@ -189,7 +189,7 @@ describe('GoAInput Component', () => {
     it("clears the input when the search x icon is clicked", async () => {
       const { findByTestId } = render(GoAInput, { name: 'test-name', testid: "input-test", type: "search" });
       const input = await findByTestId('input-test');
-      const search = jest.fn();
+      const search = vi.fn();
 
       input.addEventListener('_change', () => {
         search();
@@ -202,7 +202,7 @@ describe('GoAInput Component', () => {
     it("does fire the search event if it is not a search input type", async () => {
       const { findByTestId } = render(GoAInput, { name: 'test-name', testid: "input-test", type: "text" });
       const input = await findByTestId('input-test');
-      const search = jest.fn();
+      const search = vi.fn();
 
       input.addEventListener('_change', () => {
         search();
@@ -238,13 +238,13 @@ describe('GoAInput Component', () => {
         mb: "l",
         ml: "xl",
       });
-      const input = await baseElement.findByTestId("input-test");
+      const el = baseElement.container.querySelector(".container")
 
-      expect(input).toBeTruthy();
-      expect(input).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(input).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(input).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(input).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(el).toBeTruthy();
+      expect(el.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(el.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(el.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(el.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)");
     });
   });
 });

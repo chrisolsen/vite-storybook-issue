@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/svelte';
+import { afterEach, expect, vi, describe, it } from 'vitest';
 import GoAModal from './Modal.svelte'
 import GoAModalWrapper from './ModalWrapper.test.svelte'
 
@@ -24,7 +25,7 @@ describe('Modal Component', () => {
 
   it("should close on icon click when made to be closable", async () => {
     const el = render(GoAModal, { open: "true", closable: "true" });
-    const click = jest.fn();
+    const click = vi.fn();
 
     const closeIcon = el.queryByTestId("modal-close-button");
     closeIcon.addEventListener("_close", click);
@@ -34,7 +35,7 @@ describe('Modal Component', () => {
 
   it("should close on background click when made to be closable", async () => {
     const el = render(GoAModal, { open: "true", closable: "true" });
-    const click = jest.fn();
+    const click = vi.fn();
 
     const closeIcon = el.queryByTestId("modal-overlay");
     closeIcon.addEventListener("_close", click);
@@ -66,7 +67,7 @@ describe('Modal Component', () => {
   });
 
   it("should not render an invalid calloutVariant", async () => {
-    const mock = jest.spyOn(console, "error").mockImplementation();
+    const mock = vi.spyOn(console, "error");
     render(GoAModal, { open: "true", heading: "Heading", calloutvariant: "importantttttt" });
     await waitFor(() => {
       expect(console.error["mock"].calls.length).toBeGreaterThan(0);

@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render } from "@testing-library/svelte";
 import GoATextArea from "./TextArea.svelte"
+import { vi, it, describe, expect } from "vitest";
 
 describe("GoATextArea", () => {
 
@@ -15,16 +16,16 @@ describe("GoATextArea", () => {
     });
 
     const el = result.queryByTestId("test-id") as HTMLTextAreaElement;
-    expect(el).toHaveAttribute("name", "name");
-    expect(el).toHaveAttribute("placeholder", "Enter text here");
+    expect(el.name).toBe("name");
+    expect(el.getAttribute("placeholder")).toEqual("Enter text here");
     expect(el.value).toBe("foobar");
-    expect(el).toHaveAttribute("disabled", "");
-    expect(el).toHaveAttribute("data-testid", "test-id");
-    expect(el).toHaveAttribute("rows", "42");
+    expect(el.disabled).toBe(true);
+    expect(el.getAttribute("data-testid")).toBe("test-id");
+    expect(el.getAttribute("rows")).toBe("42");
   });
 
   it("handles the change event", async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const result = render(GoATextArea, {
       name: "name",
       value: "foo",
@@ -38,12 +39,13 @@ describe("GoATextArea", () => {
       onChange();
     });
 
+    expect(textarea.getAttribute("disabled")).toBeNull();
     await fireEvent.keyUp(textarea, { target: { value: 'bar' } });
     expect(onChange).toBeCalledTimes(1);
   })
 
   it("can be disabled", async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const result = render(GoATextArea, {
       name: "name",
       value: "foo",
@@ -55,7 +57,7 @@ describe("GoATextArea", () => {
     textarea.addEventListener("_change", onChange);
 
     await fireEvent.keyUp(textarea, { target: { value: 'bar' } });
-    expect(textarea).toHaveAttribute("disabled", "");
+    expect(textarea.getAttribute("disabled")).toEqual("");
     expect(onChange).not.toBeCalled();
   })
 
@@ -68,7 +70,7 @@ describe("GoATextArea", () => {
     });
 
     const textarea = result.queryByTestId("test-id");
-    expect(textarea).toHaveClass("error");
+    expect(textarea.classList.contains("error")).toBeTruthy();
   })
 
   it("accepts an arialabel property", async () => {

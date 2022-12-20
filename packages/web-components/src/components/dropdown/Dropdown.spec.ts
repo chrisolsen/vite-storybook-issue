@@ -1,11 +1,11 @@
-import '@testing-library/jest-dom';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/svelte';
+import { afterEach, vi, describe, it, expect } from 'vitest';
 import GoADropdown from './Dropdown.svelte';
 import GoADropdownWrapper from './DropdownWrapper.test.svelte';
 
 afterEach(() => {
   cleanup()
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('GoADropdown', () => {
@@ -25,7 +25,7 @@ describe('GoADropdown', () => {
       for (const item of items) {
         const option = result.queryByTestId(`dropdown-item-${item}`);
         expect(option).toBeTruthy();
-        expect(option).toHaveTextContent(item);
+        expect(option.dataset.value).toBe(item);
       }
     });
   });
@@ -64,7 +64,7 @@ describe('GoADropdown', () => {
     });
 
     it('selects a value', async () => {
-      const onClick = jest.fn();
+      const onClick = vi.fn();
       const name = 'favcolor';
       const items = ["red", "blue", "orange"];
       const result = render(GoADropdownWrapper, { name, items });
@@ -108,14 +108,16 @@ describe('GoADropdown', () => {
       const inputField = dropdown.querySelector('goa-input');
       await fireEvent.click(inputField);
 
-      const onClick = jest.fn()
+      const onClick = vi.fn()
       dropdown.addEventListener('_change', () => {
         onClick();
       })
 
+      expect(onClick).not.toBeCalled();
+
       await waitFor(async () => {
         const menu = result.queryByTestId("dropdown-menu");
-        expect(menu).toBeVisible()
+        expect(menu).toBeTruthy()
       });
     });
 
@@ -132,15 +134,12 @@ describe('GoADropdown', () => {
       const inputField = dropdown.querySelector('goa-input');
       await fireEvent.click(inputField);
 
-      const onClick = jest.fn()
+      const onClick = vi.fn()
       dropdown.addEventListener('_change', () => {
         onClick();
       })
 
-      await waitFor(async () => {
-        const menu = result.queryByTestId("dropdown-menu");
-        expect(menu).not.toBeVisible()
-      });
+      expect(onClick).not.toBeCalled();
     });
 
   })
@@ -193,7 +192,7 @@ describe('GoADropdown', () => {
 
       const dropdown = result.queryByTestId("favcolor-dropdown");
       const input = dropdown.querySelector('goa-input');
-      expect(input).not.toHaveAttribute("leadingicon", "add");
+      expect(input.getAttribute("leadingicon")).toBeFalsy();
     });
 
     it('shows a leading icon', async () => {
@@ -207,7 +206,7 @@ describe('GoADropdown', () => {
 
       const dropdown = result.queryByTestId("favcolor-dropdown");
       const input = dropdown.querySelector('goa-input');
-      expect(input).toHaveAttribute("leadingicon", "add");
+      expect(input.getAttribute("leadingicon")).toBe("add");
     });
   })
 
@@ -219,7 +218,7 @@ describe('GoADropdown', () => {
 
       const dropdown = result.queryByTestId("favcolor-dropdown");
       const input = dropdown.querySelector('goa-input');
-      expect(input).toHaveAttribute("placeholder", "");
+      expect(input.getAttribute("placeholder")).toBeFalsy();
     });
 
     it('shows a placeholder', async () => {
@@ -233,7 +232,7 @@ describe('GoADropdown', () => {
 
       const dropdown = result.queryByTestId("favcolor-dropdown");
       const input = dropdown.querySelector('goa-input');
-      expect(input).toHaveAttribute("placeholder", "some text");
+      expect(input.getAttribute("placeholder")).toBe("some text")
     });
   })
 
@@ -247,8 +246,8 @@ describe('GoADropdown', () => {
       const input = dropdown.querySelector('goa-input');
 
       await waitFor(() => {
-        expect(dropdown).toHaveStyle("--width: 20ch");
-        expect(input).toHaveAttribute("width", "100%");  // 20ch is min width when being calculated
+        expect(dropdown.getAttribute("style")).toContain("--width: 20ch");
+        expect(input.getAttribute("width")).toBe("100%");  // 20ch is min width when being calculated
       })
     });
 
@@ -265,8 +264,8 @@ describe('GoADropdown', () => {
       const input = dropdown.querySelector('goa-input');
 
       await waitFor(() => {
-        expect(dropdown).toHaveStyle("--width: 500px");
-        expect(input).toHaveAttribute("width", "100%");
+        expect(dropdown.getAttribute("style")).toContain("--width: 500px");
+        expect(input.getAttribute("width")).toBe("100%");
       });
     });
 
@@ -283,8 +282,8 @@ describe('GoADropdown', () => {
       const input = dropdown.querySelector('goa-input');
 
       await waitFor(() => {
-        expect(dropdown).toHaveStyle("--width: 100%");
-        expect(input).toHaveAttribute("width", "100%");
+        expect(dropdown.getAttribute("style")).toContain("--width: 100%");
+        expect(input.getAttribute("width")).toBe("100%");
       });
     });
   })
@@ -301,7 +300,7 @@ describe('GoADropdown', () => {
 
       const menu = result.queryByTestId("dropdown-menu");
       await waitFor(() => {
-        expect(menu).toHaveStyle("max-height: 276px");  // 276px is default value
+        expect(menu.getAttribute("style")).toContain("max-height: 276px");  // 276px is default value
       })
     });
 
@@ -320,7 +319,7 @@ describe('GoADropdown', () => {
 
       const menu = result.queryByTestId("dropdown-menu");
       await waitFor(() => {
-        expect(menu).toHaveStyle("max-height: 400px");
+        expect(menu.getAttribute("style")).toContain("max-height: 400px");
       });
     });
   })
@@ -340,18 +339,18 @@ describe('GoADropdown', () => {
       const input = dropdown.querySelector('goa-input');
 
       // selected value
-      expect(input).toHaveAttribute("aria-label", "Favourite Color")
+      expect(input.getAttribute("aria-label")).toBe("Favourite Color")
 
       await fireEvent.click(input);
 
       const menu = result.queryByTestId("dropdown-menu");
       await waitFor(() => {
-        expect(menu).toHaveStyle("max-height: 276px");  // 276px is default value
+        expect(menu.getAttribute("style")).toContain("max-height: 276px");  // 276px is default value
 
         for (const item of items) {
           const option = result.queryByTestId(`dropdown-item-${item}`);
           expect(option).toBeTruthy();
-          expect(option).toHaveAttribute("aria-label", item)
+          expect(option.getAttribute("aria-label")).toBe(item)
         }
       })
     });
@@ -444,10 +443,10 @@ describe('GoADropdown', () => {
       const dropdown = await baseElement.findByTestId("test-dropdown");
 
       expect(dropdown).toBeTruthy();
-      expect(dropdown).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(dropdown).toHaveStyle("margin-bottom:var(--goa-spacing-m)");
-      expect(dropdown).toHaveStyle("margin-right:var(--goa-spacing-l)");
-      expect(dropdown).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(dropdown.getAttribute("style")).contains("var(--goa-spacing-s)");
+      expect(dropdown.getAttribute("style")).contains("var(--goa-spacing-m)");
+      expect(dropdown.getAttribute("style")).contains("var(--goa-spacing-l)");
+      expect(dropdown.getAttribute("style")).contains("var(--goa-spacing-xl)");
     });
   });
 });
@@ -474,7 +473,7 @@ describe("NativeSelect", () => {
     const items = ["red", "green", "blue"];
     const { container } = render(GoADropdownWrapper, { name, value: "green", native: true, items })
 
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const select = container.querySelector("select")
 
     select.addEventListener("_change", (e: CustomEvent) => {

@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/svelte';
+import { expect, it, describe, vi } from 'vitest';
 import GoAChip from './Chip.svelte'
 
 describe('GoAChip', () => {
@@ -31,7 +32,7 @@ describe('GoAChip', () => {
     const result = render(GoAChip, { testid: "chip", content: "Some Badge", deletable: true, variant: "filter" });
     const deleteIcon = result.container.querySelector(".delete-icon");
     const chip = await result.findByTestId("chip");
-    const onClick = jest.fn();
+    const onClick = vi.fn();
 
     expect(deleteIcon).not.toBeNull();
     chip.addEventListener("_click", onClick);
@@ -54,10 +55,10 @@ describe('GoAChip', () => {
       const chip = await baseElement.findByTestId("chip-test");
 
       expect(chip).toBeTruthy();
-      expect(chip).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(chip).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(chip).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(chip).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(chip.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(chip.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(chip.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(chip.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)");
     });
   });
 })

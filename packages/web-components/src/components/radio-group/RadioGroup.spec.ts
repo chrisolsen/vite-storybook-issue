@@ -1,17 +1,18 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, waitFor } from "@testing-library/svelte";
+import { vi, afterEach, it, describe, expect } from "vitest";
 import GoARadioGroup from "./RadioGroup.svelte";
 import GoARadioGroupWrapper from "./RadioGroupWrapper.test.svelte";
 
 afterEach(() => {
   // cleanup();
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe("GoARadioGroup Component", () => {
   it("should render", async () => {
     const name = "favcolor";
-    const mock = jest.spyOn(console, "error").mockImplementation();
+    const mock = vi.spyOn(console, "error")
     const items = ["red", "blue", "orange"];
     const result = render(GoARadioGroupWrapper, {
       name,
