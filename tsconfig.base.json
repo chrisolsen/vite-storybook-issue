@@ -15,8 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@abgov/angular-components": ["packages/angular-components/src/index.ts"],
       "@abgov/react-components": ["packages/react-components/src/index.ts"],
-      "@abgov/web-components": ["dist/packages/web-components/web-components.umd.js"]
+      "@abgov/web-components": [
+        "dist/packages/web-components/web-components.umd.js"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
