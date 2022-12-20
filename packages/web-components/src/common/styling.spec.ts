@@ -1,6 +1,5 @@
-import "@testing-library/jest-dom";
-
 import { calculateMargin } from "./styling";
+import { expect, it, describe } from 'vitest';
 
 describe("Styling", () => {
   it("should create margins", () => {

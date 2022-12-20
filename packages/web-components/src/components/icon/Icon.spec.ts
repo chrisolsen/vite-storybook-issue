@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render } from '@testing-library/svelte';
+import { expect, it, describe } from 'vitest';
 import GoAIcon from './Icon.svelte'
 
 describe("Icon", () => {
@@ -13,13 +13,13 @@ describe("Icon", () => {
         mb: "l",
         ml: "xl",
       });
-      const icon = await baseElement.findByTestId("icon-test");
+      const el = await baseElement.findByTestId("icon-test");
 
-      expect(icon).toBeTruthy();
-      expect(icon).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(icon).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(icon).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(icon).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(el).toBeTruthy();
+      expect(el.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(el.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(el.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(el.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)")
     });
   });
 })

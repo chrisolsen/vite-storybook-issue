@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render } from '@testing-library/svelte';
+import { expect, it, describe } from 'vitest';
 import GoACallout from './Callout.svelte'
 import GoACalloutWrapper from './CalloutWrapper.test.svelte'
 
@@ -12,9 +12,9 @@ describe('GoACalloutComponent', () => {
 
     expect(callout).toBeTruthy();
     expect(span).toBeTruthy();
-    expect(span).toHaveClass("emergency");
-    expect(icon).toHaveAttribute("type", "warning");
-    expect(callout).toContainHTML("Complete")
+    expect(span.classList.contains("emergency")).toBeTruthy();
+    expect(icon.getAttribute("type")).toBe("warning");
+    expect(callout.innerHTML).toContain("Complete")
   });
 
   it('should render - important', async () => {
@@ -25,9 +25,9 @@ describe('GoACalloutComponent', () => {
 
     expect(callout).toBeTruthy();
     expect(span).toBeTruthy();
-    expect(span).toHaveClass("important");
-    expect(icon).toHaveAttribute("type", "alert-circle");
-    expect(callout).toContainHTML("Complete")
+    expect(span.classList.contains("important")).toBeTruthy();
+    expect(icon.getAttribute("type")).toBe("alert-circle");
+    expect(callout.innerHTML).toContain("Complete")
   });
 
   it('should render - information', async () => {
@@ -38,9 +38,9 @@ describe('GoACalloutComponent', () => {
 
     expect(callout).toBeTruthy();
     expect(span).toBeTruthy();
-    expect(span).toHaveClass("information");
-    expect(icon).toHaveAttribute("type", "information-circle");
-    expect(callout).toContainHTML("Complete")
+    expect(span.classList.contains("information")).toBeTruthy();
+    expect(icon.getAttribute("type")).toBe("information-circle");
+    expect(callout.innerHTML).toContain("Complete")
   });
 
   it('should render - success', async () => {
@@ -51,9 +51,9 @@ describe('GoACalloutComponent', () => {
 
     expect(callout).toBeTruthy();
     expect(span).toBeTruthy();
-    expect(span).toHaveClass("success");
-    expect(icon).toHaveAttribute("type", "checkmark-circle");
-    expect(callout).toContainHTML("Complete")
+    expect(span.classList.contains("success")).toBeTruthy();
+    expect(icon.getAttribute("type")).toBe("checkmark-circle");
+    expect(callout.innerHTML).toContain("Complete")
   });
 
 
@@ -65,15 +65,15 @@ describe('GoACalloutComponent', () => {
 
     expect(callout).toBeTruthy();
     expect(span).toBeTruthy();
-    expect(span).toHaveClass("emergency");
-    expect(icon).toHaveAttribute("type", "warning");
-    expect(callout).toContainHTML("Complete")
+    expect(span.classList.contains("emergency")).toBeTruthy();
+    expect(icon.getAttribute("type")).toBe("warning");
+    expect(callout.innerHTML).toContain("Complete")
   });
 
   it('should render - the content', async () => {
     const baseElement = render(GoACalloutWrapper, { type: "emergency", heading: 'Complete', content: 'This is the content' });
     const callout = baseElement.container.querySelector('goa-callout');
-    expect(callout).toContainHTML("This is the content")
+    expect(callout.innerHTML).toContain("This is the content")
   });
 
   it('should render - without the heading', async () => {
@@ -93,13 +93,13 @@ describe('GoACalloutComponent', () => {
         mb: "l",
         ml: "xl",
       });
-      const callout = await baseElement.findByTestId("callout-test");
+      const el = await baseElement.findByTestId("callout-test");
 
-      expect(callout).toBeTruthy();
-      expect(callout).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(callout).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(callout).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(callout).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(el).toBeTruthy();
+      expect(el.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(el.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(el.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(el.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)")
     });
   });
 });

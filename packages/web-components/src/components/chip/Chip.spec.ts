@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/svelte';
 import { expect, it, describe, vi } from 'vitest';
 import GoAChip from './Chip.svelte'

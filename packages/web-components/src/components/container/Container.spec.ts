@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
 import { render } from "@testing-library/svelte";
 import GoAContainerWrapper from "./ContainerWrapper.test.svelte"
 import GoAContainer from "./Container.svelte"
+import { expect, it, describe } from "vitest";
 
 describe("GoA Container", () => {
 
@@ -31,13 +31,13 @@ describe("GoA Container", () => {
         mb: "l",
         ml: "xl",
       });
-      const container = await baseElement.findByTestId("container-test");
+      const el = await baseElement.findByTestId("container-test");
 
-      expect(container).toBeTruthy();
-      expect(container).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(container).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(container).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(container).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(el).toBeTruthy();
+      expect(el.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(el.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(el.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(el.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)")
     });
   });
 });

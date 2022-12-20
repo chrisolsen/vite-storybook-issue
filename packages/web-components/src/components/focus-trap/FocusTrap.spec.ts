@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render, cleanup, fireEvent } from '@testing-library/svelte';
+import { afterEach, expect, describe, it } from 'vitest';
 import FocusTrapTestComponent from './FocusTrapTestComponent.svelte';
 
 afterEach(cleanup);
@@ -11,7 +11,8 @@ describe.skip('Focus Trap Component', () => {
   it("Trap the tab key", async () => {
     const el = render(FocusTrapTestComponent);
     fireEvent.keyUp(el.container.getElementsByClassName("email")[0], { key: 'Tab', keyCode: 9 });
-    expect(el.container.getElementsByClassName("email")[0]).toHaveFocus();
+    const focusedEl =  el.container?.getElementsByClassName("email")[0]    
+    expect(document.activeElement).toBe(focusedEl);
   });
 
 });

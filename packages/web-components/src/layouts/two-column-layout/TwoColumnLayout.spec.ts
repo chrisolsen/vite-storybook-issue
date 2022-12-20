@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom';
 import { render } from '@testing-library/svelte';
 import GoATwoColumnLayout from './TwoColumnLayoutWrapper.test.svelte'
+import { expect, it, describe } from 'vitest';
 
 describe('GoAAppHeader', () => {
   it('should render', async () => {

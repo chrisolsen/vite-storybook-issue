@@ -1,4 +1,3 @@
-import "@testing-library/jest-dom";
 import { fireEvent, render } from "@testing-library/svelte";
 import GoATextArea from "./TextArea.svelte"
 import { vi, it, describe, expect } from "vitest";
@@ -95,13 +94,15 @@ describe("GoATextArea", () => {
         mb: "l",
         ml: "xl",
       });
-      const textarea = await baseElement.findByTestId("textarea-test");
+      const el = baseElement.container.querySelector(".container")
 
-      expect(textarea).toBeTruthy();
-      expect(textarea).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(textarea).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(textarea).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(textarea).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(el).toBeTruthy();
+      const style = el.getAttribute("style")
+      expect(style).toBeTruthy();
+      expect(style).toContain("margin-top:var(--goa-spacing-s)");
+      expect(el.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(el.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(el.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)")    
     });
   });
 });

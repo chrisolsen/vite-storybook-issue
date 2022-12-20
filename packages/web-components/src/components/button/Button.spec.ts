@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { render, fireEvent, waitFor } from '@testing-library/svelte';
 import { expect, it, describe, vi, SpyInstance, beforeEach, afterEach } from 'vitest';
 import GoAButton from './Button.svelte'

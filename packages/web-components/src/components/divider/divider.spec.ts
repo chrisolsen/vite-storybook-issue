@@ -1,5 +1,5 @@
-import "@testing-library/jest-dom";
 import { render, cleanup } from "@testing-library/svelte";
+import { afterEach, it, describe, expect } from "vitest";
 import Divider from "./Divider.svelte";
 
 afterEach(cleanup);

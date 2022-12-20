@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/svelte';
 import { afterEach, expect, vi, describe, it } from 'vitest';
 import GoAModal from './Modal.svelte'

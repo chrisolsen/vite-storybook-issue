@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render, cleanup } from '@testing-library/svelte';
+import { afterEach, expect, it, describe } from 'vitest';
 import GoASkeleton from './Skeleton.svelte';
 
 afterEach(cleanup);
@@ -23,13 +23,13 @@ describe('GoARadioGroup Component', () => {
         mb: "l",
         ml: "xl",
       });
-      const skeleton = await baseElement.findByTestId("skeleton-test");
+      const el = await baseElement.findByTestId("skeleton-test");
 
-      expect(skeleton).toBeTruthy();
-      expect(skeleton).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(skeleton).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(skeleton).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(skeleton).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(el).toBeTruthy();
+      expect(el.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(el.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(el.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(el.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)")
     });
   });
 });

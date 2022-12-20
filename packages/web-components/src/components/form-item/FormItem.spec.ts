@@ -1,4 +1,3 @@
-import "@testing-library/jest-dom";
 import { render, cleanup } from "@testing-library/svelte";
 import GoAFormItem from "./FormItem.svelte"
 import { afterEach, vi, it, describe, expect } from "vitest"
@@ -156,10 +155,10 @@ describe("GoA FormItem", () => {
       const formitem = await baseElement.findByTestId("formitem-test");
 
       expect(formitem).toBeTruthy();
-      expect(formitem).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(formitem).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(formitem).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(formitem).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(formitem.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(formitem.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(formitem.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(formitem.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)");
     });
   });
 });

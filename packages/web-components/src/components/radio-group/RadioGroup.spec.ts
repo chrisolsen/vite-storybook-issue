@@ -1,4 +1,3 @@
-import "@testing-library/jest-dom";
 import { fireEvent, render, waitFor } from "@testing-library/svelte";
 import { vi, afterEach, it, describe, expect } from "vitest";
 import GoARadioGroup from "./RadioGroup.svelte";
@@ -74,13 +73,13 @@ describe("GoARadioGroup Component", () => {
         mb: "l",
         ml: "xl",
       });
-      const radiogroup = await baseElement.findByTestId("radiogroup-test");
+      const el = await baseElement.findByTestId("radiogroup-test");
 
-      expect(radiogroup).toBeTruthy();
-      expect(radiogroup).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(radiogroup).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(radiogroup).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(radiogroup).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(el).toBeTruthy();
+      expect(el.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(el.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(el.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(el.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)")
     });
   });
 });

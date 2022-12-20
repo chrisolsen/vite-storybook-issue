@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render } from '@testing-library/svelte';
+import { expect, describe, it } from 'vitest';
 import GoAMicrositeHeader from './MicrositeHeader.svelte'
 
 describe('GoAMicrositeHeader', () => {
@@ -9,8 +9,8 @@ describe('GoAMicrositeHeader', () => {
     const type = queryByTestId('type');
     const version = queryByTestId('version');
 
-    expect(type).toContainHTML("alpha");
-    expect(version).toContainHTML("1.2.3");
+    expect(type.innerHTML).toContain("Alpha");
+    expect(version.innerHTML).toContain("1.2.3");
   });
 
   it('should render without a version', async () => {
@@ -18,7 +18,7 @@ describe('GoAMicrositeHeader', () => {
     const type = queryByTestId('type');
     const version = queryByTestId('version');
 
-    expect(type).toContainHTML("alpha");
+    expect(type.innerHTML).toContain("Alpha");
     expect(version).toBeNull();
   });
 
@@ -26,15 +26,15 @@ describe('GoAMicrositeHeader', () => {
     const { queryByTestId } = render(GoAMicrositeHeader, { type: 'alpha', version: "1.2.3" });
     const version = queryByTestId('version');
 
-    expect(version).toContainHTML("1.2.3");
+    expect(version.innerHTML).toContain("1.2.3");
   });
 
-  ['alpha', 'beta'].forEach(type => {
+  ['Alpha', 'Beta'].forEach(type => {
     it(`should show the type for ${type}`, async () => {
-      const { queryByTestId } = render(GoAMicrositeHeader, { type: type });
+      const { queryByTestId } = render(GoAMicrositeHeader, { type: type.toLowerCase() });
       const version = queryByTestId('type');
 
-      expect(version).toContainHTML(type);
+      expect(version.innerHTML).toContain(type);
     });
   });
 
@@ -42,14 +42,14 @@ describe('GoAMicrositeHeader', () => {
     const { queryByTestId } = render(GoAMicrositeHeader, { type: 'live' });
     const version = queryByTestId('type');
 
-    expect(version).not.toContainHTML('live');
+    expect(version.innerHTML).not.toContain('live');
   });
 
   it(`should show a feedback url if provided`, async () => {
     const { queryByTestId } = render(GoAMicrositeHeader, { type: 'alpha', feedbackurl: 'http://example.com' });
     const feedback = queryByTestId('feedback');
 
-    expect(feedback).toContainHTML('http://example.com');
+    expect(feedback.innerHTML).toContain('http://example.com');
   });
 
   it(`should not show a feedback section if one isn't provided`, async () => {

@@ -1,5 +1,5 @@
-import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/svelte";
+import { expect, describe, it } from "vitest";
 import GoAHeroBanner from "./HeroBanner.svelte"
 import GoAHeroBannerWrapper from "./HeroBannerWrapper.test.svelte"
 

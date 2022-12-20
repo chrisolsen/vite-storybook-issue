@@ -1,4 +1,3 @@
-import "@testing-library/jest-dom";
 import { render, cleanup, waitFor } from "@testing-library/svelte";
 import { afterEach, it, describe, expect, vi } from "vitest";
 import GoAButtonGroup from "./ButtonGroup.svelte";

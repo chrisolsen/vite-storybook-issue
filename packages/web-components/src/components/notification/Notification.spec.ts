@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { render, waitFor } from '@testing-library/svelte';
 import GoANotification from './Notification.svelte'
 import { vi, it, describe, expect } from "vitest"

@@ -1,5 +1,4 @@
 import React from "react"
-import "@testing-library/jest-dom";
 import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import { GoADropdown } from "./dropdown";
 import { GoADropdownItem, GoADropdownOption } from "./dropdown-item";

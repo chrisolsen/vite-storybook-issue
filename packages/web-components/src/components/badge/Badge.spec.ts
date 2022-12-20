@@ -1,5 +1,5 @@
-import "@testing-library/jest-dom";
 import { render } from "@testing-library/svelte";
+import { expect, it, describe } from "vitest";
 import GoABadge from "./Badge.svelte";
 
 describe("GoABadgeComponent", () => {
@@ -25,8 +25,8 @@ describe("GoABadgeComponent", () => {
         });
         const badge = await baseElement.findByTestId("badge-test");
 
-        expect(badge).toHaveClass(`badge-${type}`);
-        expect(badge).toContainHTML("Content");
+        expect(badge.classList.contains(`badge-${type}`)).toBeTruthy();
+        expect(badge.innerHTML).toContain("Content");
       });
     });
   });
@@ -44,8 +44,8 @@ describe("GoABadgeComponent", () => {
 
         expect(badge).toBeTruthy();
         expect(badge.childElementCount).toBe(2);
-        expect(badge).toHaveClass(`badge-${type}`);
-        expect(badge).toContainHTML("Content");
+        expect(badge.classList.contains(`badge-${type}`)).toBeTruthy();
+        expect(badge.innerHTML).toContain("Content");
       });
     });
   });
@@ -64,10 +64,10 @@ describe("GoABadgeComponent", () => {
       const badge = await baseElement.findByTestId("badge-test");
 
       expect(badge).toBeTruthy();
-      expect(badge).toHaveStyle("margin-top:var(--goa-spacing-s)");
-      expect(badge).toHaveStyle("margin-right:var(--goa-spacing-m)");
-      expect(badge).toHaveStyle("margin-bottom:var(--goa-spacing-l)");
-      expect(badge).toHaveStyle("margin-left:var(--goa-spacing-xl)");
+      expect(badge.getAttribute("style")).toContain("margin-top:var(--goa-spacing-s)");
+      expect(badge.getAttribute("style")).toContain("margin-right:var(--goa-spacing-m)");
+      expect(badge.getAttribute("style")).toContain("margin-bottom:var(--goa-spacing-l)");
+      expect(badge.getAttribute("style")).toContain("margin-left:var(--goa-spacing-xl)");
     });
   });
 });

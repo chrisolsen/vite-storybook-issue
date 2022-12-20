@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
 import { render } from '@testing-library/svelte';
+import { expect, it, describe } from 'vitest';
 import GoAAppHeader from './AppHeader.svelte'
 
 describe('GoAAppHeader', () => {
@@ -10,7 +10,7 @@ describe('GoAAppHeader', () => {
 
     expect(appHeader).toBeTruthy();
     expect(link).toBeTruthy();
-    expect(link).toHaveAttribute("href", "www.test.com");
-    expect(appHeader).toContainHTML("Complete")
+    expect(link.getAttribute("href")).toBe("www.test.com");
+    expect(appHeader.innerHTML).toContain("Complete")
   });
 });
