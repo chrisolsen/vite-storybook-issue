@@ -19,7 +19,8 @@
       "@abgov/react-components": ["packages/react-components/src/index.ts"],
       "@abgov/web-components": [
         "dist/packages/web-components/web-components.umd.js"
-      ]
+      ],
+      "@ui-components/docs": ["packages/docs/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
